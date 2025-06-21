@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Alatau City</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #000;
+            background: #f3f6fa;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 60px;
+            background: #fff;
+            border-bottom: 1px solid #eee; /* Небольшая рамка для хедера */
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            font-size: 14px;
+            color: #000;
+            font-weight: 500;
+            padding: 5px 0; /* Для лучшей интерактивности */
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: #2F62AD;
+            transition: width 0.3s ease;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .right-menu {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .lang-select {
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .contact-btn {
+            background: #000;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD; /* Синий цвет */
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .contact-btn:hover::before {
+            width: 100%;
+        }
+
+        .contact-btn:hover {
+            color: #fff; /* Цвет текста при наведении */
+        }
+
+        .arrow {
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .arrow svg {
+            stroke: #fff;
+            stroke-width: 2;
+        }
+
+        .districts {
+            display: flex;
+            justify-content: center;
+            background: #fff;
+            padding: 40px -80px;
+            border-radius: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Небольшая рамка для секции */
+            z-index: 4;
+        }
+
+        .districts-content {
+            width: 1400px;
+            height: 774px; /* Fixed height for initial state */
+            background: #fff;
+            border-radius: 40px;
+            display: flex;
+            gap: 60px;
+            padding: 64px 80px;
+            box-sizing: border-box;
+            align-items: flex-start;
+            justify-content: space-between;
+            transition: height 0.3s ease-out; /* Smooth transition for height change */
+            overflow: hidden; /* Hide overflow when not expanded */
+        }
+
+        .districts-content.expanded {
+            height: auto; /* Allow height to adjust to content */
+            overflow: visible; /* Show overflow when expanded */
+        }
+
+        .districts-left {
+            width: 598px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 598px;
+        }
+
+        .accordion-item summary {
+            width: 598px;
+            height: 79px;
+            box-sizing: border-box;
+            background: #FAFAFA;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 22px;
+            border-radius: 14px;
+            border: 1px solid #E0E0E0; /* Рамка для аккордеона */
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .accordion-item summary:hover {
+            background: #f0f0f0;
+            border-color: #B0B0B0;
+        }
+
+        .accordion-item[open] summary {
+            background: #fff;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-color: #FAFAFA;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Легкая тень для открытого элемента */
+        }
+
+        .accordion-content {
+            background: #fff;
+            border-radius: 0 0 14px 14px;
+            border: 1px solid #E0E0E0;
+            border-top: none;
+            padding: 20px;
+            padding-bottom: 30px;
+            font-size: 16px;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Легкая тень для содержимого */
+        }
+
+        .accordion-content p {
+            margin-bottom: 10px;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .accordion-content ul li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 45%;
+            min-width: 250px;
+        }
+
+        .accordion-content ul li svg {
+            flex-shrink: 0;
+        }
+
+        .accordion-content ul li strong {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .accordion-content ul li span {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.3;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .green-dot {
+            background: #15784D;
+        }
+
+        .orange-dot {
+            background: #EF6C00;
+        }
+
+        .yellow-dot {
+            background: #FDD835;
+        }
+
+        .blue-dot {
+            background: #2196F3;
+        }
+
+        .districts-map {
+            width: 466px;
+            height: 100%;
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .map-puzzle {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .map-piece {
+            position: absolute;
+            object-fit: contain;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            transform: scale(1);
+            cursor: pointer;
+        }
+
+
+        .map-piece:hover {
+            filter: none !important;
+            transform: scale(1.15);
+            z-index: 10;
+        }
+
+        .map-piece.active {
+            filter: none;
+            transform: scale(1.15);
+            z-index: 10;
+        }
+
+        .green-piece {
+            width: 382.14px;
+            top: 9px;
+            left: 63.88px;
+        }
+
+        .orange-piece {
+            width: 375.67px;
+            top: 156.09px;
+            left: 11.18px;
+        }
+
+        .yellow-piece {
+            width: 236px;
+            top: 323.7px;
+            left: 12.36px;
+        }
+
+        .blue-piece {
+            width: 84.31px;
+            top: 502.23px;
+            left: 130.1px;
+        }
+
+        .investment {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .investment-grid {
+            display: flex;
+            gap: 20px;
+            max-width: 1220px;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .investment-main {
+            width: 730px;
+            height: 604px;
+            border-radius: 20px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #ddd; /* Рамка для главной инвестиционной карточки */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .investment-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(47, 98, 173, 0.15); /* Синий фильтр */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Remove this rule entirely, if it's present: */
+/*
+.map-piece:not(.active) {
+    filter: grayscale(100%);
+}
+*/
+
+.map-puzzle {
+    width: 466px;
+    height: 100%;
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Remove any 'transition: filter' here if present */
+}
+
+/* By default, all map pieces are colorful */
+.map-piece {
+    position: absolute;
+    object-fit: contain;
+    transition: all 0.3s ease; /* Transition for scale only */
+    pointer-events: auto;
+    transform: scale(1);
+    cursor: pointer;
+    filter: grayscale(0); /* IMPORTANT: All pieces are colorful by default */
+}
+
+/* When you hover over a map piece, it scales up, but no grayscale change yet */
+.map-piece:hover {
+    filter: grayscale(0); /* Stays colorful on hover */
+    transform: scale(1.15);
+    z-index: 10;
+}
+
+/* NEW: When a map piece is active, it's colorful and scaled. */
+.map-piece.active {
+    filter: grayscale(0);
+    transform: scale(1.15);
+    z-index: 10;
+}
+
+/* NEW: This is the key. When there is an 'active' piece,
+   all OTHER pieces (that are not active and not hovered) become grayscale. */
+.districts-map:has(.map-piece.active) .map-piece:not(.active):not(:hover) {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease; /* Smooth transition for grayscale effect */
+}
+
+/* NEW: Smooth transition for when a piece goes from grayscale back to colorful */
+.districts-map:has(.map-piece.active) .map-piece.active {
+    transition: filter 0.3s ease;
+}
+
+        .investment-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .investment-main:hover img {
+            transform: scale(1.05);
+        }
+
+        .investment-main:hover::before {
+            opacity: 1;
+        }
+
+        .investment-main-text {
+            position: absolute;
+            z-index: 1;
+        }
+
+        .investment-main-text h2 {
+            color: white;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .investment-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 460px;
+        }
+
+        .investment-card {
+            padding: 25px;
+            min-height: 188px;
+            position: relative;
+            border-radius: 16px;
+            height: 100%;
+            overflow: hidden;
+            color: white;
+            box-sizing: border-box;
+            border: 1px solid #ddd; /* Рамка для инвестиционных карточек */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .investment-card::before {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            left: -50px;
+            top: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 0;
+            transition: transform 0.8s ease, left 0.8s ease, top 0.8s ease;
+        }
+
+        .investment-card.orange {
+            background-color: #EF6C00;
+        }
+
+        .investment-card.orange::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' fill=\'none\'%3E%3Cpath d=\'M0 88.7049L88.7049 400L400 311.295L311.295 0L0 88.7049ZM295.803 245.376C297.288 250.584 294.267 256.011 289.059 257.496L154.624 295.803C149.416 297.288 143.989 294.267 142.504 289.059L104.197 154.624C102.713 149.416 105.733 143.989 110.941 142.504L245.376 104.197C250.584 102.713 256.011 105.733 257.496 110.941L295.803 245.376Z\' fill=\'%23F5986F\'/%3E%3C/svg%3E');
+        }
+
+        .investment-card.green {
+            background-color: #15784D;
+        }
+
+        .investment-card.green::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' fill=\'none\'%3E%3Cpath d=\'M200 0C89.5427 0 0 89.5427 0 200C0 310.457 89.5427 400 200 400C310.457 400 400 310.457 400 200C400 89.5427 310.457 0 200 0ZM200 305.987C141.468 305.987 94.0127 258.536 94.0127 200.004C94.0127 141.472 141.464 94.0168 200 94.0168C258.536 94.0168 305.987 141.468 305.987 200.004C305.987 258.54 258.536 305.987 200 305.987Z\' fill=\'%2342856E\'/%3E%3C/svg%3E');
+        }
+
+        .investment-card.blue {
+            background-color: #2F62AD;
+        }
+
+        .investment-card.blue::before {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'394\' height=\'200\' viewBox=\'0 0 394 200\' fill=\'none\'%3E%3Cpath d=\'M197.002 0L0 200H394L197.002 0ZM197.002 66.4094L296.25 167.171H97.7497L196.998 66.4094H197.002Z\' fill=\'%233C74C8\'/%3E%3C/svg%3E');
+            top: 30px; /* Specific top offset for the blue icon */
+        }
+
+        /* Content to appear on top of the pseudo-element */
+        .investment-card .investment-card-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        .investment-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 8px;
+            line-height: 1.4;
+        }
+
+        .investment-card p {
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background: none;
+            border: none;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Hover effects for the pseudo-element (icon animation) */
+        .investment-card:hover::before {
+            left: 200px;
+            transform: rotate(360deg);
+        }
+
+        /* Specific hover effect for the blue card's icon */
+        .investment-card.blue:hover::before {
+            top: -30px;
+            left: 200px;
+            transform: rotate(180deg);
+        }
+
+        /* Анимация кнопок слайдера */
+        .hero .arrow-button {
+            border: 1px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 64px;
+            height: 64px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero .arrow-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD; /* Синий цвет */
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero .arrow-button:hover::before {
+            width: 100%;
+        }
+
+        .hero .arrow-button:hover {
+            border-color: #2F62AD;
+        }
+
+
+        /* Анимация кнопки "Подробнее" в первой секции */
+        .hero .hero-details-btn {
+            background: #1C1C1C;
+            width: 200px;
+            height: 59px;
+            color: white;
+            padding: 20px 48px;
+            border-radius: 12px;
+            font-size: 18px;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .hero .hero-details-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD; /* Синий цвет */
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero .hero-details-btn:hover::before {
+            width: 100%;
+        }
+
+        .hero .hero-details-btn:hover {
+            color: #fff;
+        }
+
+        /* Анимация главной новости */
+        .main-news-item {
+            width: 598px;
+            height: 448px;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #ddd; /* Рамка для главной новости */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .main-news-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease; /* Smooth transition for image zoom */
+        }
+
+        .main-news-item:hover img {
+            transform: scale(1.05); /* Zoom in effect */
+        }
+
+        .main-news-item .news-main-text-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            padding: 16px 20px;
+            min-height: 80px; /* Начальная высота */
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Изменено на flex-start */
+            transition: all 0.4s ease-out; /* Плавный переход для всех свойств */
+            transform: translateY(0);
+            padding-bottom: 20px; /* Сброс padding-bottom */
+        }
+
+        .main-news-item:hover .news-main-text-container {
+            background-color: #2F62AD; /* Синий фон */
+            color: white; /* Белый текст */
+            min-height: 180px; /* Увеличиваем высоту для большего раскрытия */
+            padding-bottom: 20px; /* Add some padding for expanded content */
+        }
+
+        .main-news-item .news-main-text-container .news-main-date {
+            font-size: 14px;
+            color: #999;
+            transition: color 0.4s ease; /* Smooth transition for date color */
+        }
+
+        .main-news-item:hover .news-main-text-container .news-main-date {
+            color: rgba(255, 255, 255, 0.7); /* Белый с прозрачностью */
+        }
+
+        .main-news-item .news-main-text-container .news-main-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 4px;
+            line-height: 1.3;
+            color: #000; /* Цвет по умолчанию */
+            transition: color 0.4s ease;
+        }
+
+        .main-news-item:hover .news-main-text-container .news-main-title {
+            color: white;
+        }
+
+        .main-news-item .news-main-text-container .news-main-lead {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+            opacity: 0; /* Скрыт по умолчанию */
+            max-height: 0; /* Скрываем по высоте */
+            overflow: hidden;
+            transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.4s ease; /* Плавное появление */
+        }
+
+        .main-news-item:hover .news-main-text-container .news-main-lead {
+            opacity: 1; /* Показываем при наведении */
+            max-height: 100px; /* Достаточно места для текста */
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.8); /* Лид текст становится белым с прозрачностью при наведении */
+        }
+
+        .news-button-main {
+            position: absolute;
+            bottom: 20px; /* Коррекция позиции */
+            right: 20px; /* Коррекция позиции */
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            opacity: 0; /* Скрыт по умолчанию */
+            transition: opacity 0.3s ease, background 0.3s ease;
+        }
+
+        .main-news-item:hover .news-button-main {
+            opacity: 1; /* Показываем при наведении */
+            background: rgba(255, 255, 255, 0.4); /* Увеличиваем прозрачность фона стрелки при наведении */
+        }
+
+        .news-button-main svg path {
+            stroke: white;
+        }
+
+
+        /* Три маленьких элемента новостей */
+        .news-item-small {
+            display: flex;
+            width: 598px;
+            height: 135px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .news-item-small .text-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        .news-item-small .news-image-container {
+            position: relative;
+            width: 180px;
+            height: 135px;
+            flex-shrink: 0;
+            z-index: 2; /* Убедимся, что изображение всегда поверх синего фона */
+        }
+
+        .news-item-small .news-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-item-small .news-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff6933; /* Default tag color */
+            color: white;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            z-index: 3; /* Сделать тег поверх всего */
+        }
+
+        .news-item-small::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 180px; /* Начинаем синий фон после картинки */
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD; /* Синий цвет */
+            transition: width 0.3s ease;
+            z-index: 1; /* Позади текста, но поверх картинки */
+        }
+
+        .news-item-small:hover::before {
+            width: calc(100% - 180px); /* Расширяем синий фон на всю текстовую часть */
+        }
+
+        .news-item-small:hover .text-content .news-date,
+        .news-item-small:hover .text-content .news-title {
+            color: white !important;
+        }
+
+        .news-item-small .news-item-arrow {
+            position: absolute;
+            top: 16px; /* Отступ сверху */
+            right: 16px; /* Отступ справа */
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2); /* Полупрозрачный белый фон */
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            opacity: 0; /* Скрыт по умолчанию */
+            transition: opacity 0.3s ease, background 0.3s ease;
+            z-index: 3; /* Убедимся, что кнопка поверх синего фона */
+        }
+
+        .news-item-small:hover .news-item-arrow {
+            opacity: 1; /* Показываем при наведении */
+            background: rgba(255, 255, 255, 0.4); /* Увеличиваем прозрачность фона стрелки */
+        }
+
+        .news-item-small .news-item-arrow svg path {
+            stroke: white;
+        }
+
+        .partners {
+            background-image: url('{{ url_for('static', filename='uploads/Partners.png') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 80px 60px;
+            height: 724px;
+            width: 1220px;
+            color: white;
+            border-radius: 30px;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ddd; /* Рамка для партнеров */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .partners::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 30px;
+            z-index: 1;
+        }
+
+        .partners > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+        }
+
+        .partners h2 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .partners p {
+            font-size: 16px;
+            max-width: 600px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .partners .btn-dark {
+            background: #2d2d2d; /* Серый цвет по умолчанию */
+            color: #fff;
+            padding: 10px 26px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .partners .btn-dark::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD; /* Синий цвет */
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .partners .btn-dark:hover::before {
+            width: 100%;
+        }
+
+        .partners .btn-dark:hover {
+            color: #fff; /* Цвет текста при наведении */
+        }
+
+
+
+    .custom-footer {
+      background-color: #f3f6fa;
+      width: 1440px;
+      height: 354px;
+      font-family: sans-serif;
+      padding: 50px 100px 20px 100px;
+    }
+
+    .footer-title {
+      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .footer-link {
+      display: block;
+      color: #888;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      color: #000;
+    }
+
+    .footer-input {
+      border-radius: 10px;
+      height: 48px;
+      font-size: 16px;
+      padding-left: 16px;
+    }
+
+    .footer-button {
+      height: 48px;
+      border-radius: 10px;
+      font-size: 16px;
+      background-color: #1a1a1a;
+      color: white;
+      padding: 0 24px;
+      border: none;
+    }
+
+    .footer-button:hover {
+      background-color: #333;
+    }
+
+    .social-icons i {
+      font-size: 24px;
+      color: #888;
+      margin-right: 16px;
+      transition: 0.3s;
+    }
+
+    .social-icons i:hover {
+      color: #000;
+    }
+
+    .footer-bottom {
+      font-size: 14px;
+      color: #888;
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .email-form {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='uploads/LogoAlatauСity.svg') }}" alt="Logo">
+    </div>
+    <nav class="nav">
+        <a href="#">Об Алатау</a>
+        <a href="#">Инвесторам</a>
+        <a href="#">Для СМИ</a>
+        <a href="#">Галерея</a>
+        <a href="#">Контакты</a>
+    </nav>
+    <div class="right-menu">
+        <div class="lang-select">RU ▾</div>
+        <button class="contact-btn">Связаться с нами</button>
+    </div>
+</header>
+
+<section class="hero" style="position: relative; height: 768px; border-radius: 32px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+    <div class="slides-container" style="display: flex; height: 100%; transition: transform 0.5s ease-in-out;">
+        <div class="hero-slide" style="flex-shrink: 0; width: 100%; height: 100%; position: relative; background-size: cover; background-position: center;">
+            <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35);"></div>
+            <div style="position: absolute; bottom: 40px; left: 60px; color: white; z-index: 2;">
+                <h1 style="font-size: 98px; font-weight: 600; margin: 0;">Alatau City</h1>
+                <p style="font-size: 24px; margin: 12px 0 28px;">Территория опережающего развития</p>
+                <a href="#" class="hero-details-btn">Подробнее</a>
+            </div>
+        </div>
+
+        <div class="hero-slide" style="flex-shrink: 0; width: 100%; height: 100%; position: relative; background-size: cover; background-position: center;">
+            <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35);"></div>
+            <div style="position: absolute; bottom: 40px; left: 60px; color: white; z-index: 2;">
+                <h1 style="font-size: 98px; font-weight: 600; margin: 0;">Alatau City - Slide 2</h1>
+                <p style="font-size: 24px; margin: 12px 0 28px;">Инновации и возможности</p>
+                <a href="#" class="hero-details-btn">Подробнее</a>
+            </div>
+        </div>
+
+        <div class="hero-slide" style="flex-shrink: 0; width: 100%; height: 100%; position: relative; background-size: cover; background-position: center;">
+            <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35);"></div>
+            <div style="position: absolute; bottom: 40px; left: 60px; color: white; z-index: 2;">
+                <h1 style="font-size: 98px; font-weight: 600; margin: 0;">Alatau City - Slide 3</h1>
+                <p style="font-size: 24px; margin: 12px 0 28px;">Будущее начинается здесь</p>
+                <a href="#" class="hero-details-btn">Подробнее</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="position: absolute; bottom: 40px; right: 40px; display: flex; align-items: center; gap: 16px; z-index: 2;">
+        <div id="prevSlideBtn" class="arrow-button">
+            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 1.5L2 8L8.5 14.5" stroke="white" stroke-width="2"/>
+            </svg>
+        </div>
+        <div id="nextSlideBtn" class="arrow-button">
+            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 1.5L8 8L1.5 14.5" stroke="white" stroke-width="2"/>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<section class="districts">
+    <div class="districts-content">
+        <div class="districts-left">
+            <p style="font-size: 17px; width: 598px">
+                Алатау – стратегический проект Казахстана, призванный стать международным Центрально-Азиатским хабом.
+                <br><br>
+                Город расположен вдоль стратегической автомагистрали Алматы–Конаев, соединяющей транспортный коридор
+                Западная Европа – Западный Китай. Представляет собой уникальное сочетание четырёх дистриктов, общей
+                площадью 88 000 га.
+            </p>
+
+            <div class="accordion">
+                <details class="accordion-item green" data-district="green">
+                    <summary><span class="dot green-dot"></span>Green District</summary>
+                    <div class="accordion-content">
+                        <p>Крупнейший финансовый, деловой, культурный и архитектурный центр мирового уровня. Деловой
+                            центр включает в себя многофункциональные комплексы, объединяющие все необходимое для
+                            бизнеса, отдыха и развлечений.</p>
+                        <ul>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#10B981" stroke-width="1.5"
+                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
+                                          stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15.9965 13.7H16.0055" stroke="#10B981" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11.9955 13.7H12.0045" stroke="#10B981" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7.99451 13.7H8.00349" stroke="#10B981" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15.9965 16.7H16.0055" stroke="#10B981" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11.9955 16.7H12.0045" stroke="#10B981" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7.99451 16.7H8.00349" stroke="#10B981" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>3 988 га</strong>
+                                    <span>Общая площадь</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
+                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>223 тыс. жителей</strong>
+                                    <span>(к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
+                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#10B981" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
+                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#10B981"
+                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>181 тыс. человек</strong>
+                                    <span>Количество рабочих мест (к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
+                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#10B981" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>до 306 тыс. человек</strong>
+                                    <span>Ожидаемое количество туристов (к 2050 году)</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <p><strong>География:</strong> Расположен вдоль стратегической автомагистрали
+                            Алматы–Конаев, соединяющей транспортный коридор Западная Европа – Западный Китай.</p>
+                    </div>
+                </details>
+                <details class="accordion-item orange" data-district="orange">
+                    <summary><span class="dot orange-dot"></span>Growing District</summary>
+                    <div class="accordion-content">
+                        <p>Крупнейший финансовый, деловой, культурный и архитектурный центр мирового уровня. Деловой
+                            центр включает в себя многофункциональные комплексы, объединяющие все необходимое для
+                            бизнеса, отдыха и развлечений.</p>
+                        <ul>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#EF6C00" stroke-width="1.5"
+                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
+                                          stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>3 988 га</strong>
+                                    <span>Общая площадь</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
+                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>223 тыс. жителей</strong>
+                                    <span>(к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
+                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#EF6C00" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
+                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#EF6C00"
+                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>181 тыс. человек</strong>
+                                    <span>Количество рабочих мест (к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
+                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#EF6C00" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>до 306 тыс. человек</strong>
+                                    <span>Ожидаемое количество туристов (к 2050 году)</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <p><strong>География:</strong> Расположен вдоль стратегической автомагистрали
+                            Алматы–Конаев, соединяющей транспортный коридор Западная Европа – Западный Китай.</p>
+                    </div>
+                </details>
+                <details class="accordion-item yellow" data-district="yellow">
+                    <summary><span class="dot yellow-dot"></span>Golden District</summary>
+                    <div class="accordion-content">
+                        <p>Крупнейший финансовый, деловой, культурный и архитектурный центр мирового уровня. Деловой
+                            центр включает в себя многофункциональные комплексы, объединяющие все необходимое для
+                            бизнеса, отдыха и развлечений.</p>
+                        <ul>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#FDD835" stroke-width="1.5"
+                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
+                                          stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>3 988 га</strong>
+                                    <span>Общая площадь</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
+                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>223 тыс. жителей</strong>
+                                    <span>(к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
+                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#FDD835" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
+                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#FDD835"
+                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>181 тыс. человек</strong>
+                                    <span>Количество рабочих мест (к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
+                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#FDD835" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>до 306 тыс. человек</strong>
+                                    <span>Ожидаемое количество туристов (к 2050 году)</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <p><strong>География:</strong> Расположен вдоль стратегической автомагистрали
+                            Алматы–Конаев, соединяющей транспортный коридор Западная Европа – Западный Китай.</p>
+                    </div>
+                </details>
+                <details class="accordion-item blue" data-district="blue">
+                    <summary><span class="dot blue-dot"></span>Gate District</summary>
+                    <div class="accordion-content">
+                        <p>Крупнейший финансовый, деловой, культурный и архитектурный центр мирового уровня. Деловой
+                            центр включает в себя многофункциональные комплексы, объединяющие все необходимое для
+                            бизнеса, отдыха и развлечений.</p>
+                        <ul>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#2196F3" stroke-width="1.5"
+                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
+                                          stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>3 988 га</strong>
+                                    <span>Общая площадь</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
+                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>223 тыс. жителей</strong>
+                                    <span>(к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
+                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#2196F3" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
+                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#2196F3"
+                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>181 тыс. человек</strong>
+                                    <span>Количество рабочих мест (к 2050 году)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
+                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#2196F3" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <strong>до 306 тыс. человек</strong>
+                                    <span>Ожидаемое количество туристов (к 2050 году)</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <p><strong>География:</strong> Расположен вдоль стратегической автомагистрали
+                            Алматы–Конаев, соединяющей транспортный коридор Западная Европа – Западный Китай.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="districts-map">
+            <div class="map-puzzle">
+                <img src="{{ url_for('static', filename='uploads/1.svg') }}" class="map-piece green-piece"
+                     data-district="green" alt="">
+                <img src="{{ url_for('static', filename='uploads/2.svg') }}" class="map-piece orange-piece"
+                     data-district="orange" alt="">
+                <img src="{{ url_for('static', filename='uploads/3.svg') }}" class="map-piece yellow-piece"
+                     data-district="yellow" alt="">
+                <img src="{{ url_for('static', filename='uploads/4.svg') }}" class="map-piece blue-piece"
+                     data-district="blue" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="investment">
+    <div class="investment-grid">
+        <div class="investment-main">
+            <img src="{{ url_for('static', filename='uploads/Image (1).png') }}" alt="Город инвестиционных возможностей">
+            <div class="investment-main-text">
+                <h2>Город инвестиционных<br>возможностей</h2>
+            </div>
+        </div>
+
+        <div class="investment-cards">
+            <div class="investment-card orange">
+                <div class="investment-card-content">
+                    <h4>Специальная индустриальная зона<br><strong>ALATAU</strong></h4>
+                    <p>Почему стоит инвестировать в ALATAU SEZ?</p>
+                </div>
+                <span class="arrow">↗</span>
+            </div>
+
+            <div class="investment-card green">
+                <div class="investment-card-content">
+                    <h4>Как стать инвестором?</h4>
+                    <p>Регистрация юридического лица в Алатау, налоговые льготы для компаний, государственная
+                        поддержка</p>
+                </div>
+                <span class="arrow">↗</span>
+            </div>
+
+            <div class="investment-card blue">
+                <div class="investment-card-content">
+                    <h4>Свободная таможенная зона</h4>
+                    <p>Упрощенные условия для ввоза и вывоза товаров без уплаты таможенных пошлин</p>
+                </div>
+                <span class="arrow">↗</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="news-section"
+         style="padding: 50px 0; background-color: white; border-radius: 40px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);">
+    <div class="news-content" style="width: 1248px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h2 style="font-size: 32px; font-weight: 600;">Новости и события города</h2>
+            <a href="#" style="font-size: 14px; color: #555; text-decoration: none;">Все новости ↗</a>
+        </div>
+
+        <div style="display: flex; gap: 52px;">
+            <div class="main-news-item">
+                <img src="{{ url_for('static', filename='uploads/news-main.jpg') }}" alt="Main news">
+                <div style="position: absolute; top: 12px; left: 12px; background: #ff6c36; color: white; padding: 4px 12px; border-radius: 999px; font-size: 14px;">
+                    Новости
+                </div>
+                <div class="news-main-text-container">
+                    <div class="news-main-date">12.04.2025</div>
+                    <div class="news-main-title">
+                        Заголовок главной новости о городе Алатау не больше 80 символов
+                    </div>
+                    <p class="news-main-lead">Лид главной новости: краткий анонс содержания материала в одно-два тезисных предложения</p>
+                    <div class="news-button-main">
+                        <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.5 1.5L8 8L1.5 14.5" stroke="white" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 21px; justify-content: space-between;">
+                <div class="news-item-small">
+                    <div class="news-image-container">
+                        <img src="{{ url_for('static', filename='uploads/news-1.jpg') }}" alt="">
+                        <div class="news-tag" style="background: #ff6933;">
+                            Интервью
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <div class="news-date" style="font-size: 14px; color: #999;">12.04.2025</div>
+                        <div class="news-title" style="font-size: 16px; font-weight: 500;">Заголовок главной новости о новом городе
+                            Алатау
+                        </div>
+                        <div class="news-item-arrow">
+                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.5 1.5L8 8L1.5 14.5" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-item-small">
+                    <div class="news-image-container">
+                        <img src="{{ url_for('static', filename='uploads/news-2.jpg') }}" alt="">
+                        <div class="news-tag" style="background: #ff6933;">
+                            Новости
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <div class="news-date" style="font-size: 14px; color: #999;">12.04.2025</div>
+                        <div class="news-title" style="font-size: 16px; font-weight: 500;">Заголовок главной новости о новом городе
+                            Алатау
+                        </div>
+                        <div class="news-item-arrow">
+                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.5 1.5L8 8L1.5 14.5" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-item-small">
+                    <div class="news-image-container">
+                        <img src="{{ url_for('static', filename='uploads/news-3.jpg') }}" alt="">
+                        <div class="news-tag" style="background: #6366f1;">
+                            Событие
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <div class="news-date" style="font-size: 14px; color: #999;">12.04.2025</div>
+                        <div class="news-title" style="font-size: 16px; font-weight: 500;">Заголовок главной новости о новом городе
+                            Алатау
+                        </div>
+                        <div class="news-item-arrow">
+                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.5 1.5L8 8L1.5 14.5" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="partners">
+    <div class="content-wrapper">
+        <h2>Наши партнеры</h2>
+        <p>Алатау – город, где встречаются амбиции, инновации и партнерство. Совместными усилиями мы реализуем
+            значимые проекты, открывая новые горизонты для жителей города и формируя будущее, наполненное
+            возможностями.</p>
+        <a href="#" class="btn-dark">Подробнее</a>
+    </div>
+</section>
+
+  <footer class="custom-footer mx-auto">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="footer-title">О городе</div>
+        <a href="#" class="footer-link">О городе Алатау</a>
+        <a href="#" class="footer-link">СЭЗ Алатау</a>
+        <a href="#" class="footer-link">Инвесторам</a>
+        <a href="#" class="footer-link">Контакты</a>
+      </div>
+      <div class="col-md-4">
+        <div class="footer-title">Прочее</div>
+        <a href="#" class="footer-link">Онлайн-подача заявки на участие в проектах</a>
+        <a href="#" class="footer-link">Регистрация юридического лица в Алатау</a>
+        <a href="#" class="footer-link">Карта сайта</a>
+      </div>
+      <div class="col-md-5">
+        <div class="footer-title">Есть вопросы или предложения?</div>
+        <div class="text-muted mb-1">Отправьте почту и мы свяжемся с вами в ближайшее время!</div>
+        <form class="email-form">
+          <input type="email" class="form-control footer-input" placeholder="Email" />
+          <button type="submit" class="footer-button">Отправить</button>
+        </form>
+        <div class="fw-semibold mb-2">Следите за нами в соцсетях:</div>
+        <div class="social-icons">
+          <i class="bi bi-youtube"></i>
+          <i class="bi bi-linkedin"></i>
+          <i class="bi bi-instagram"></i>
+          <i class="bi bi-facebook"></i>
+          <i class="bi bi-telegram"></i>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom mt-4">
+      <div>© Alatau City, 2025</div>
+      <div>Дизайн и разработка: KeipTech</div>
+    </div>
+  </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // Districts accordion and map interaction (keep this as is)
+    const mapPieces = document.querySelectorAll('.map-piece');
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    const districtsContent = document.querySelector('.districts-content');
+
+    function setActiveDistrict(districtName) {
+        let anyActive = false;
+        mapPieces.forEach(piece => {
+            piece.classList.remove('active');
+        });
+        accordionItems.forEach(item => {
+            item.removeAttribute('open');
+        });
+
+        if (districtName) {
+            anyActive = true;
+            const selectedMapPiece = document.querySelector(`.map-piece[data-district="${districtName}"]`);
+            if (selectedMapPiece) {
+                selectedMapPiece.classList.add('active');
+            }
+            const selectedAccordionItem = document.querySelector(`.accordion-item[data-district="${districtName}"]`);
+            if (selectedAccordionItem) {
+                selectedAccordionItem.setAttribute('open', '');
+            }
+        }
+
+        if (anyActive) {
+            districtsContent.classList.add('expanded');
+        } else {
+            districtsContent.classList.remove('expanded');
+        }
+    }
+
+    mapPieces.forEach(piece => {
+        piece.addEventListener('click', () => {
+            const district = piece.dataset.district;
+            if (piece.classList.contains('active')) {
+                setActiveDistrict(null);
+            } else {
+                setActiveDistrict(district);
+            }
+        });
+    });
+
+    accordionItems.forEach(item => {
+        const summary = item.querySelector('summary');
+        summary.addEventListener('click', (event) => {
+            event.preventDefault();
+            const district = item.dataset.district;
+            const isOpen = item.hasAttribute('open');
+
+            if (isOpen) {
+                setActiveDistrict(null);
+            } else {
+                setActiveDistrict(district);
+            }
+        });
+    });
+
+    setActiveDistrict(null);
+
+    // Hero section slider functionality
+    const slidesContainer = document.querySelector('.slides-container');
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const prevSlideBtn = document.getElementById('prevSlideBtn');
+    const nextSlideBtn = document.getElementById('nextSlideBtn');
+
+    const slidesData = [
+        {
+            backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}',
+            title: 'Alatau City',
+            description: 'Территория опережающего развития',
+            buttonLink: '#'
+        },
+        {
+            backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', // Make sure you have image2.jpg and image3.jpg in your uploads folder
+            title: 'Alatau City - Slide 2',
+            description: 'Инновации и возможности',
+            buttonLink: '#'
+        },
+        {
+            backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', // Example path, adjust as needed
+            title: 'Alatau City - Slide 3',
+            description: 'Будущее начинается здесь',
+            buttonLink: '#'
+        }
+    ];
+
+    let currentSlideIndex = 0;
+
+    // Set background images for each slide initially
+    heroSlides.forEach((slide, index) => {
+        slide.style.backgroundImage = `url('${slidesData[index].backgroundImage}')`;
+        // If you want to dynamically set text for each slide, you'd do it here too:
+        // slide.querySelector('h1').textContent = slidesData[index].title;
+        // slide.querySelector('p').textContent = slidesData[index].description;
+        // slide.querySelector('a').href = slidesData[index].buttonLink;
+    });
+
+    function showSlide(index) {
+        currentSlideIndex = (index + slidesData.length) % slidesData.length;
+        const offset = -currentSlideIndex * 100; // Calculate percentage to shift
+        slidesContainer.style.transform = `translateX(${offset}%)`;
+    }
+
+    function nextSlide() {
+        showSlide(currentSlideIndex + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentSlideIndex - 1);
+    }
+
+    // Attach slider event listeners
+    if (prevSlideBtn && nextSlideBtn) {
+        prevSlideBtn.addEventListener('click', prevSlide);
+        nextSlideBtn.addEventListener('click', nextSlide);
+    }
+
+    // Initialize slider
+    showSlide(currentSlideIndex);
+});
+</script>
+
+</body>
+</html>
