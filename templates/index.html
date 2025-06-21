@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Alatau City</title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -25,13 +26,14 @@
             color: inherit;
         }
 
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 22px 60px;
             background: #fff;
-            border-bottom: 1px solid #eee; /* Небольшая рамка для хедера */
+            border-bottom: 1px solid #eee;
         }
 
         .logo img {
@@ -39,7 +41,7 @@
         }
 
         .nav {
-            display: flex;
+            display: flex; /* Default for desktop */
             gap: 32px;
         }
 
@@ -47,7 +49,7 @@
             font-size: 14px;
             color: #000;
             font-weight: 500;
-            padding: 5px 0; /* Для лучшей интерактивности */
+            padding: 5px 0;
             position: relative;
         }
 
@@ -67,7 +69,7 @@
         }
 
         .right-menu {
-            display: flex;
+            display: flex; /* Default for desktop */
             gap: 18px;
             align-items: center;
         }
@@ -99,7 +101,7 @@
             left: 0;
             width: 0;
             height: 100%;
-            background-color: #2F62AD; /* Синий цвет */
+            background-color: #2F62AD;
             transition: width 0.3s ease;
             z-index: -1;
         }
@@ -109,38 +111,259 @@
         }
 
         .contact-btn:hover {
-            color: #fff; /* Цвет текста при наведении */
+            color: #fff;
         }
 
-        .arrow {
-            width: 42px;
-            height: 42px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
+        /* Burger Menu (Desktop Hidden) */
+        .menu-toggle {
+            display: none; /* Hidden by default on desktop */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 24px;
             cursor: pointer;
+            z-index: 100;
         }
 
-        .arrow svg {
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #000;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.open span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.open span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 98;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px; /* Hidden off-screen */
+            width: 300px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+            transition: right 0.3s ease-in-out;
+            padding: 20px;
+            padding-top: 80px;
+            z-index: 99;
+            display: flex; /* Always flex for its internal layout */
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.open {
+            right: 0; /* Slide in */
+        }
+
+
+
+        .mobile-menu .nav,
+        .mobile-menu .right-menu {
+            display: flex; /* Ensure these are always visible inside the mobile menu */
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .mobile-menu .nav a {
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            width: 100%;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .mobile-menu .nav a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu .contact-btn {
+            width: 100%;
+            text-align: center;
+            padding: 12px 26px;
+        }
+
+
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 768px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero .slides-container {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .hero-slide {
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-slide::before { /* Overlay for text readability */
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-slide-content {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            color: white;
+            z-index: 2;
+        }
+
+        .hero-slide-content h1 {
+            font-size: 98px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .hero-slide-content p {
+            font-size: 24px;
+            margin: 12px 0 28px;
+        }
+
+        .hero-details-btn {
+            background: #1C1C1C;
+            width: 200px;
+            height: 59px;
+            color: white;
+            padding: 20px 48px;
+            border-radius: 12px;
+            font-size: 18px;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .hero-details-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD;
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero-details-btn:hover::before {
+            width: 100%;
+        }
+
+        .hero-details-btn:hover {
+            color: #fff;
+        }
+
+        .hero-slider-controls {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 2;
+        }
+
+        .arrow-button {
+            border: 1px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 64px;
+            height: 64px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .arrow-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2F62AD;
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .arrow-button:hover::before {
+            width: 100%;
+        }
+
+        .arrow-button:hover {
+            border-color: #2F62AD;
+        }
+
+        .arrow-button svg {
             stroke: #fff;
             stroke-width: 2;
         }
 
+        /* Districts Section */
         .districts {
             display: flex;
             justify-content: center;
             background: #fff;
-            padding: 40px -80px;
+            padding: 40px 0;
             border-radius: 40px;
             margin-bottom: 40px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Небольшая рамка для секции */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             z-index: 4;
+            max-width: 1220px; /* Added max-width to match design, adjust as needed */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .districts-content {
-            width: 1400px;
-            height: 774px; /* Fixed height for initial state */
+            width: 1400px; /* This will be overridden by max-width on .districts for overall container */
+            height: 774px;
             background: #fff;
             border-radius: 40px;
             display: flex;
@@ -149,21 +372,26 @@
             box-sizing: border-box;
             align-items: flex-start;
             justify-content: space-between;
-            transition: height 0.3s ease-out; /* Smooth transition for height change */
-            overflow: hidden; /* Hide overflow when not expanded */
+            transition: height 0.3s ease-out;
+            overflow: hidden;
+            flex-grow: 1; /* Allow content to grow within max-width */
         }
 
         .districts-content.expanded {
-            height: auto; /* Allow height to adjust to content */
-            overflow: visible; /* Show overflow when expanded */
+            height: auto;
+            width: 1400px!important;
         }
 
         .districts-left {
             width: 598px;
-            height: auto;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        .districts-left p {
+            font-size: 17px;
+            width: 598px; /* Retain for desktop */
         }
 
         .accordion {
@@ -176,7 +404,6 @@
         .accordion-item summary {
             width: 598px;
             height: 79px;
-            box-sizing: border-box;
             background: #FAFAFA;
             padding: 0 20px;
             display: flex;
@@ -185,7 +412,7 @@
             font-weight: 600;
             font-size: 22px;
             border-radius: 14px;
-            border: 1px solid #E0E0E0; /* Рамка для аккордеона */
+            border: 1px solid #E0E0E0;
             cursor: pointer;
             transition: background 0.3s, border-color 0.3s;
         }
@@ -204,7 +431,7 @@
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             border-color: #FAFAFA;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Легкая тень для открытого элемента */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .accordion-content {
@@ -212,11 +439,10 @@
             border-radius: 0 0 14px 14px;
             border: 1px solid #E0E0E0;
             border-top: none;
-            padding: 20px;
-            padding-bottom: 30px;
+            padding: 20px 20px 30px;
             font-size: 16px;
             color: #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Легкая тень для содержимого */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .accordion-content p {
@@ -261,21 +487,10 @@
             border-radius: 50%;
         }
 
-        .green-dot {
-            background: #15784D;
-        }
-
-        .orange-dot {
-            background: #EF6C00;
-        }
-
-        .yellow-dot {
-            background: #FDD835;
-        }
-
-        .blue-dot {
-            background: #2196F3;
-        }
+        .green-dot { background: #15784D; }
+        .orange-dot { background: #EF6C00; }
+        .yellow-dot { background: #FDD835; }
+        .blue-dot { background: #2196F3; }
 
         .districts-map {
             width: 466px;
@@ -285,12 +500,13 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            overflow-x: hidden; /* Hide overflow on desktop */
         }
 
         .map-puzzle {
             width: 100%;
             height: 100%;
-            position: relative;
+            position: relative; /* Essential for positioning children */
         }
 
         .map-piece {
@@ -300,45 +516,32 @@
             pointer-events: auto;
             transform: scale(1);
             cursor: pointer;
+            filter: grayscale(0);
         }
 
-
         .map-piece:hover {
-            filter: none !important;
+            filter: grayscale(0);
             transform: scale(1.15);
             z-index: 10;
         }
 
         .map-piece.active {
-            filter: none;
+            filter: grayscale(0);
             transform: scale(1.15);
             z-index: 10;
         }
 
-        .green-piece {
-            width: 382.14px;
-            top: 9px;
-            left: 63.88px;
+        .districts-map:has(.map-piece.active) .map-piece:not(.active):not(:hover) {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
         }
 
-        .orange-piece {
-            width: 375.67px;
-            top: 156.09px;
-            left: 11.18px;
-        }
+        .green-piece { width: 382.14px; top: 9px; left: 63.88px; }
+        .orange-piece { width: 375.67px; top: 156.09px; left: 11.18px; }
+        .yellow-piece { width: 236px; top: 323.7px; left: 12.36px; }
+        .blue-piece { width: 84.31px; top: 502.23px; left: 130.1px; }
 
-        .yellow-piece {
-            width: 236px;
-            top: 323.7px;
-            left: 12.36px;
-        }
-
-        .blue-piece {
-            width: 84.31px;
-            top: 502.23px;
-            left: 130.1px;
-        }
-
+        /* Investment Section */
         .investment {
             display: flex;
             align-items: center;
@@ -367,7 +570,7 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            border: 1px solid #ddd; /* Рамка для главной инвестиционной карточки */
+            border: 1px solid #ddd;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
@@ -378,65 +581,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(47, 98, 173, 0.15); /* Синий фильтр */
+            background-color: rgba(47, 98, 173, 0.15);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
-        /* Remove this rule entirely, if it's present: */
-/*
-.map-piece:not(.active) {
-    filter: grayscale(100%);
-}
-*/
-
-.map-puzzle {
-    width: 466px;
-    height: 100%;
-    position: relative;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    /* Remove any 'transition: filter' here if present */
-}
-
-/* By default, all map pieces are colorful */
-.map-piece {
-    position: absolute;
-    object-fit: contain;
-    transition: all 0.3s ease; /* Transition for scale only */
-    pointer-events: auto;
-    transform: scale(1);
-    cursor: pointer;
-    filter: grayscale(0); /* IMPORTANT: All pieces are colorful by default */
-}
-
-/* When you hover over a map piece, it scales up, but no grayscale change yet */
-.map-piece:hover {
-    filter: grayscale(0); /* Stays colorful on hover */
-    transform: scale(1.15);
-    z-index: 10;
-}
-
-/* NEW: When a map piece is active, it's colorful and scaled. */
-.map-piece.active {
-    filter: grayscale(0);
-    transform: scale(1.15);
-    z-index: 10;
-}
-
-/* NEW: This is the key. When there is an 'active' piece,
-   all OTHER pieces (that are not active and not hovered) become grayscale. */
-.districts-map:has(.map-piece.active) .map-piece:not(.active):not(:hover) {
-    filter: grayscale(100%);
-    transition: filter 0.3s ease; /* Smooth transition for grayscale effect */
-}
-
-/* NEW: Smooth transition for when a piece goes from grayscale back to colorful */
-.districts-map:has(.map-piece.active) .map-piece.active {
-    transition: filter 0.3s ease;
-}
 
         .investment-main img {
             width: 100%;
@@ -483,7 +631,7 @@
             overflow: hidden;
             color: white;
             box-sizing: border-box;
-            border: 1px solid #ddd; /* Рамка для инвестиционных карточек */
+            border: 1px solid #ddd;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
@@ -500,32 +648,15 @@
             transition: transform 0.8s ease, left 0.8s ease, top 0.8s ease;
         }
 
-        .investment-card.orange {
-            background-color: #EF6C00;
-        }
+        .investment-card.orange { background-color: #EF6C00; }
+        .investment-card.orange::before { background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' fill=\'none\'%3E%3Cpath d=\'M0 88.7049L88.7049 400L400 311.295L311.295 0L0 88.7049ZM295.803 245.376C297.288 250.584 294.267 256.011 289.059 257.496L154.624 295.803C149.416 297.288 143.989 294.267 142.504 289.059L104.197 154.624C102.713 149.416 105.733 143.989 110.941 142.504L245.376 104.197C250.584 102.713 256.011 105.733 257.496 110.941L295.803 245.376Z\' fill=\'%23F5986F\'/%3E%3C/svg%3E'); }
 
-        .investment-card.orange::before {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' fill=\'none\'%3E%3Cpath d=\'M0 88.7049L88.7049 400L400 311.295L311.295 0L0 88.7049ZM295.803 245.376C297.288 250.584 294.267 256.011 289.059 257.496L154.624 295.803C149.416 297.288 143.989 294.267 142.504 289.059L104.197 154.624C102.713 149.416 105.733 143.989 110.941 142.504L245.376 104.197C250.584 102.713 256.011 105.733 257.496 110.941L295.803 245.376Z\' fill=\'%23F5986F\'/%3E%3C/svg%3E');
-        }
+        .investment-card.green { background-color: #15784D; }
+        .investment-card.green::before { background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' fill=\'none\'%3E%3Cpath d=\'M200 0C89.5427 0 0 89.5427 0 200C0 310.457 89.5427 400 200 400C310.457 400 400 310.457 400 200C400 89.5427 310.457 0 200 0ZM200 305.987C141.468 305.987 94.0127 258.536 94.0127 200.004C94.0127 141.472 141.464 94.0168 200 94.0168C258.536 94.0168 305.987 141.468 305.987 200.004C305.987 258.54 258.536 305.987 200 305.987Z\' fill=\'%2342856E\'/%3E%3C/svg%3E'); }
 
-        .investment-card.green {
-            background-color: #15784D;
-        }
+        .investment-card.blue { background-color: #2F62AD; }
+        .investment-card.blue::before { background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'394\' height=\'200\' viewBox=\'0 0 394 200\' fill=\'none\'%3E%3Cpath d=\'M197.002 0L0 200H394L197.002 0ZM197.002 66.4094L296.25 167.171H97.7497L196.998 66.4094H197.002Z\' fill=\'%233C74C8\'/%3E%3C/svg%3E'); top: 30px; }
 
-        .investment-card.green::before {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\' fill=\'none\'%3E%3Cpath d=\'M200 0C89.5427 0 0 89.5427 0 200C0 310.457 89.5427 400 200 400C310.457 400 400 310.457 400 200C400 89.5427 310.457 0 200 0ZM200 305.987C141.468 305.987 94.0127 258.536 94.0127 200.004C94.0127 141.472 141.464 94.0168 200 94.0168C258.536 94.0168 305.987 141.468 305.987 200.004C305.987 258.54 258.536 305.987 200 305.987Z\' fill=\'%2342856E\'/%3E%3C/svg%3E');
-        }
-
-        .investment-card.blue {
-            background-color: #2F62AD;
-        }
-
-        .investment-card.blue::before {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'394\' height=\'200\' viewBox=\'0 0 394 200\' fill=\'none\'%3E%3Cpath d=\'M197.002 0L0 200H394L197.002 0ZM197.002 66.4094L296.25 167.171H97.7497L196.998 66.4094H197.002Z\' fill=\'%233C74C8\'/%3E%3C/svg%3E');
-            top: 30px; /* Specific top offset for the blue icon */
-        }
-
-        /* Content to appear on top of the pseudo-element */
         .investment-card .investment-card-content {
             position: relative;
             z-index: 2;
@@ -548,7 +679,7 @@
             line-height: 1.4;
         }
 
-        .arrow {
+        .investment-card .arrow { /* Specific arrow for cards */
             position: absolute;
             top: 16px;
             right: 20px;
@@ -561,101 +692,67 @@
             z-index: 2;
         }
 
-        /* Hover effects for the pseudo-element (icon animation) */
         .investment-card:hover::before {
             left: 200px;
             transform: rotate(360deg);
         }
 
-        /* Specific hover effect for the blue card's icon */
         .investment-card.blue:hover::before {
             top: -30px;
             left: 200px;
             transform: rotate(180deg);
         }
 
-        /* Анимация кнопок слайдера */
-        .hero .arrow-button {
-            border: 1px solid white;
-            border-radius: 50%;
+        /* News Section */
+        .news-section {
+            padding: 50px 0;
+            background-color: white;
+            border-radius: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            max-width: 1220px; /* Added max-width */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .news-content {
+    max-width: 1220px;
+    width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+
+        .news-content-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            width: 64px;
-            height: 64px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
+            margin-bottom: 24px;
         }
 
-        .hero .arrow-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background-color: #2F62AD; /* Синий цвет */
-            transition: width 0.3s ease;
-            z-index: -1;
+        .news-content-header h2 {
+            font-size: 32px;
+            font-weight: 600;
         }
 
-        .hero .arrow-button:hover::before {
-            width: 100%;
-        }
-
-        .hero .arrow-button:hover {
-            border-color: #2F62AD;
-        }
-
-
-        /* Анимация кнопки "Подробнее" в первой секции */
-        .hero .hero-details-btn {
-            background: #1C1C1C;
-            width: 200px;
-            height: 59px;
-            color: white;
-            padding: 20px 48px;
-            border-radius: 12px;
-            font-size: 18px;
+        .news-content-header a {
+            font-size: 14px;
+            color: #555;
             text-decoration: none;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            transition: color 0.3s ease;
         }
 
-        .hero .hero-details-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background-color: #2F62AD; /* Синий цвет */
-            transition: width 0.3s ease;
-            z-index: -1;
+        .news-grid {
+            display: flex;
+            gap: 52px;
         }
 
-        .hero .hero-details-btn:hover::before {
-            width: 100%;
-        }
-
-        .hero .hero-details-btn:hover {
-            color: #fff;
-        }
-
-        /* Анимация главной новости */
         .main-news-item {
             width: 598px;
             height: 448px;
             position: relative;
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid #ddd; /* Рамка для главной новости */
+            border: 1px solid #ddd;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
@@ -663,53 +760,62 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease; /* Smooth transition for image zoom */
+            transition: transform 0.3s ease;
         }
 
         .main-news-item:hover img {
-            transform: scale(1.05); /* Zoom in effect */
+            transform: scale(1.05);
         }
 
-        .main-news-item .news-main-text-container {
+        .main-news-item .news-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff6c36;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 14px;
+        }
+
+        .news-main-text-container {
             position: absolute;
             bottom: 0;
             width: 100%;
             background: white;
             padding: 16px 20px;
-            min-height: 80px; /* Начальная высота */
+            min-height: 80px;
             box-sizing: border-box;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Изменено на flex-start */
-            transition: all 0.4s ease-out; /* Плавный переход для всех свойств */
-            transform: translateY(0);
-            padding-bottom: 20px; /* Сброс padding-bottom */
+            justify-content: flex-start;
+            transition: all 0.4s ease-out;
         }
 
         .main-news-item:hover .news-main-text-container {
-            background-color: #2F62AD; /* Синий фон */
-            color: white; /* Белый текст */
-            min-height: 180px; /* Увеличиваем высоту для большего раскрытия */
-            padding-bottom: 20px; /* Add some padding for expanded content */
+            background-color: #2F62AD;
+            color: white;
+            min-height: 180px;
+            padding-bottom: 20px;
         }
 
-        .main-news-item .news-main-text-container .news-main-date {
+        .news-main-text-container .news-main-date {
             font-size: 14px;
             color: #999;
-            transition: color 0.4s ease; /* Smooth transition for date color */
+            transition: color 0.4s ease;
         }
 
         .main-news-item:hover .news-main-text-container .news-main-date {
-            color: rgba(255, 255, 255, 0.7); /* Белый с прозрачностью */
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        .main-news-item .news-main-text-container .news-main-title {
+        .news-main-text-container .news-main-title {
             font-size: 22px;
             font-weight: 600;
             margin-top: 4px;
             line-height: 1.3;
-            color: #000; /* Цвет по умолчанию */
+            color: #000;
             transition: color 0.4s ease;
         }
 
@@ -717,27 +823,27 @@
             color: white;
         }
 
-        .main-news-item .news-main-text-container .news-main-lead {
+        .news-main-text-container .news-main-lead {
             font-size: 16px;
             color: #666;
             margin-top: 10px;
-            opacity: 0; /* Скрыт по умолчанию */
-            max-height: 0; /* Скрываем по высоте */
+            opacity: 0;
+            max-height: 0;
             overflow: hidden;
-            transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.4s ease; /* Плавное появление */
+            transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.4s ease;
         }
 
         .main-news-item:hover .news-main-text-container .news-main-lead {
-            opacity: 1; /* Показываем при наведении */
-            max-height: 100px; /* Достаточно места для текста */
+            opacity: 1;
+            max-height: 100px;
             margin-top: 10px;
-            color: rgba(255, 255, 255, 0.8); /* Лид текст становится белым с прозрачностью при наведении */
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .news-button-main {
             position: absolute;
-            bottom: 20px; /* Коррекция позиции */
-            right: 20px; /* Коррекция позиции */
+            bottom: 20px;
+            right: 20px;
             width: 42px;
             height: 42px;
             background: rgba(0, 0, 0, 0.6);
@@ -745,21 +851,26 @@
             display: grid;
             place-items: center;
             cursor: pointer;
-            opacity: 0; /* Скрыт по умолчанию */
+            opacity: 0;
             transition: opacity 0.3s ease, background 0.3s ease;
         }
 
         .main-news-item:hover .news-button-main {
-            opacity: 1; /* Показываем при наведении */
-            background: rgba(255, 255, 255, 0.4); /* Увеличиваем прозрачность фона стрелки при наведении */
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .news-button-main svg path {
             stroke: white;
         }
 
+        .small-news-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 21px;
+            justify-content: space-between;
+        }
 
-        /* Три маленьких элемента новостей */
         .news-item-small {
             display: flex;
             width: 598px;
@@ -774,23 +885,12 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
-        .news-item-small .text-content {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex-grow: 1;
-            position: relative;
-            z-index: 2;
-            transition: color 0.3s ease;
-        }
-
         .news-item-small .news-image-container {
             position: relative;
             width: 180px;
             height: 135px;
             flex-shrink: 0;
-            z-index: 2; /* Убедимся, что изображение всегда поверх синего фона */
+            z-index: 2;
         }
 
         .news-item-small .news-image-container img {
@@ -803,28 +903,39 @@
             position: absolute;
             top: 12px;
             left: 12px;
-            background: #ff6933; /* Default tag color */
+            background: #ff6933;
             color: white;
             padding: 2px 10px;
             border-radius: 999px;
             font-size: 12px;
-            z-index: 3; /* Сделать тег поверх всего */
+            z-index: 3;
+        }
+
+        .news-item-small .text-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
         }
 
         .news-item-small::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 180px; /* Начинаем синий фон после картинки */
+            left: 180px;
             width: 0;
             height: 100%;
-            background-color: #2F62AD; /* Синий цвет */
+            background-color: #2F62AD;
             transition: width 0.3s ease;
-            z-index: 1; /* Позади текста, но поверх картинки */
+            z-index: 1;
         }
 
         .news-item-small:hover::before {
-            width: calc(100% - 180px); /* Расширяем синий фон на всю текстовую часть */
+            width: calc(100% - 180px);
         }
 
         .news-item-small:hover .text-content .news-date,
@@ -834,29 +945,30 @@
 
         .news-item-small .news-item-arrow {
             position: absolute;
-            top: 16px; /* Отступ сверху */
-            right: 16px; /* Отступ справа */
+            top: 16px;
+            right: 16px;
             width: 32px;
             height: 32px;
-            background: rgba(255, 255, 255, 0.2); /* Полупрозрачный белый фон */
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: grid;
             place-items: center;
             cursor: pointer;
-            opacity: 0; /* Скрыт по умолчанию */
+            opacity: 0;
             transition: opacity 0.3s ease, background 0.3s ease;
-            z-index: 3; /* Убедимся, что кнопка поверх синего фона */
+            z-index: 3;
         }
 
         .news-item-small:hover .news-item-arrow {
-            opacity: 1; /* Показываем при наведении */
-            background: rgba(255, 255, 255, 0.4); /* Увеличиваем прозрачность фона стрелки */
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .news-item-small .news-item-arrow svg path {
             stroke: white;
         }
 
+        /* Partners Section */
         .partners {
             background-image: url('{{ url_for('static', filename='uploads/Partners.png') }}');
             background-size: cover;
@@ -870,7 +982,7 @@
             margin: 40px auto;
             position: relative;
             overflow: hidden;
-            border: 1px solid #ddd; /* Рамка для партнеров */
+            border: 1px solid #ddd;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
@@ -918,7 +1030,7 @@
         }
 
         .partners .btn-dark {
-            background: #2d2d2d; /* Серый цвет по умолчанию */
+            background: #2d2d2d;
             color: #fff;
             padding: 10px 26px;
             border-radius: 12px;
@@ -939,7 +1051,7 @@
             left: 0;
             width: 0;
             height: 100%;
-            background-color: #2F62AD; /* Синий цвет */
+            background-color: #2F62AD;
             transition: width 0.3s ease;
             z-index: -1;
         }
@@ -949,83 +1061,364 @@
         }
 
         .partners .btn-dark:hover {
-            color: #fff; /* Цвет текста при наведении */
+            color: #fff;
         }
 
+        /* Footer */
+        .custom-footer {
+            background-color: #f3f6fa;
+            width: 1440px; /* Will be overridden by max-width */
+            height: 354px;
+            font-family: sans-serif;
+            padding: 50px 100px 20px 100px;
+            max-width: 1220px; /* Added max-width */
+            margin-left: auto;
+            margin-right: auto;
+        }
 
+        .footer-title {
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
 
-    .custom-footer {
-      background-color: #f3f6fa;
-      width: 1440px;
-      height: 354px;
-      font-family: sans-serif;
-      padding: 50px 100px 20px 100px;
-    }
+        .footer-link {
+            display: block;
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
 
-    .footer-title {
-      font-weight: 600;
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
+        .footer-link:hover {
+            color: #000;
+        }
 
-    .footer-link {
-      display: block;
-      color: #888;
-      font-size: 16px;
-      margin-bottom: 10px;
-      text-decoration: none;
-    }
+        .footer-input {
+            border-radius: 10px;
+            height: 48px;
+            font-size: 16px;
+            padding-left: 16px;
+            border: 1px solid #ddd;
+        }
 
-    .footer-link:hover {
-      color: #000;
-    }
+        .footer-button {
+            height: 48px;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #1a1a1a;
+            color: white;
+            padding: 0 24px;
+            border: none;
+        }
 
-    .footer-input {
-      border-radius: 10px;
-      height: 48px;
-      font-size: 16px;
-      padding-left: 16px;
-    }
+        .footer-button:hover {
+            background-color: #333;
+        }
 
-    .footer-button {
-      height: 48px;
-      border-radius: 10px;
-      font-size: 16px;
-      background-color: #1a1a1a;
-      color: white;
-      padding: 0 24px;
-      border: none;
-    }
+        .social-icons i {
+            font-size: 24px;
+            color: #888;
+            margin-right: 16px;
+            transition: 0.3s;
+        }
 
-    .footer-button:hover {
-      background-color: #333;
-    }
+        .social-icons i:hover {
+            color: #000;
+        }
 
-    .social-icons i {
-      font-size: 24px;
-      color: #888;
-      margin-right: 16px;
-      transition: 0.3s;
-    }
+        .footer-bottom {
+            font-size: 14px;
+            color: #888;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
 
-    .social-icons i:hover {
-      color: #000;
-    }
+        .email-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
 
-    .footer-bottom {
-      font-size: 14px;
-      color: #888;
-      margin-top: 30px;
-      display: flex;
-      justify-content: space-between;
-    }
+        /* --- Responsive Styles (Mobile First Approach) --- */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+                justify-content: space-between;
+            }
 
-    .email-form {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
+            .header .nav,
+            .header .right-menu {
+                display: none; /* Hide desktop nav on mobile */
+            }
+
+            .menu-toggle {
+                display: flex; /* Show burger icon on mobile */
+            }
+
+            /* Districts Section Mobile */
+            .districts {
+                padding: 20px 0; /* Adjust padding for mobile */
+                border-radius: 20px; /* Smaller border-radius */
+            }
+
+            .districts-content {
+                flex-direction: column;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .districts-left,
+            .accordion,
+            .accordion-item summary {
+                width: 100%;
+            }
+
+            .districts-left p {
+                width: 100%;
+                font-size: 16px;
+            }
+
+            .districts-map {
+                width: 100%;
+                justify-content: center;
+                height: auto;
+                overflow-x: auto; /* Allow horizontal scrolling if needed */
+            }
+
+            .map-puzzle {
+                position: relative; /* Keep relative */
+                width: 400px; /* Fixed width for the map container to scale */
+                height: 580px; /* Adjusted height to maintain aspect ratio */
+                transform: scale(0.7); /* Scale down the entire puzzle */
+                transform-origin: top center; /* Scale from top center */
+                flex-shrink: 0; /* Prevent shrinking below this size */
+            }
+
+            .map-piece {
+                /* On mobile, these absolute positions are scaled together by .map-puzzle transform */
+                /* No need for position:static or complex flex changes here */
+                filter: grayscale(0) !important; /* Ensure pieces are colorful */
+            }
+
+            .districts-map:has(.map-piece.active) .map-piece:not(.active):not(:hover) {
+                filter: grayscale(0); /* Remove grayscale effect on mobile for stacked pieces */
+            }
+
+            /* Investment Section Mobile */
+            .investment-grid {
+                flex-direction: column;
+                gap: 20px;
+                padding: 0 20px;
+            }
+
+            .investment-main,
+            .investment-cards,
+            .investment-card {
+                width: 100%;
+            }
+
+            .investment-main-text h2 {
+                font-size: 28px;
+            }
+
+            .investment-card {
+                min-height: 150px;
+            }
+
+            /* News Section Mobile */
+            .news-section {
+                padding: 30px 0;
+                border-radius: 20px; /* Smaller border-radius */
+            }
+
+            .news-content {
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .news-content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .news-grid {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .main-news-item {
+                width: 100%;
+                height: auto;
+                min-height: 300px;
+            }
+
+            .news-main-text-container {
+                min-height: 100px;
+            }
+            .main-news-item:hover .news-main-text-container {
+                min-height: 140px;
+                padding-bottom: 15px;
+            }
+
+            .news-main-text-container .news-main-title {
+                font-size: 18px;
+            }
+
+            .news-main-text-container .news-main-lead {
+                font-size: 14px;
+            }
+
+            .news-button-main {
+                opacity: 1; /* Always show arrow on main news on mobile */
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            .small-news-items-container {
+                gap: 15px; /* Tighter spacing for small news items on mobile */
+            }
+
+            .news-item-small {
+                width: 100%;
+                flex-direction: column; /* Stack image and text vertically */
+                height: auto;
+                min-height: unset;
+                align-items: flex-start; /* Align content to the start when stacked */
+            }
+
+            .news-item-small .news-image-container {
+                width: 100%;
+                height: 180px;
+            }
+
+            .news-item-small .news-tag {
+                top: 10px;
+                left: 10px;
+            }
+
+            .news-item-small::before {
+                display: none; /* Disable blue background slide */
+            }
+
+            .news-item-small:hover .text-content .news-date,
+            .news-item-small:hover .text-content .news-title {
+                color: #000; /* Keep text black on hover */
+            }
+
+            .news-item-small .news-item-arrow {
+                opacity: 1; /* Always show arrow */
+                background: rgba(0, 0, 0, 0.2);
+                top: auto;
+                bottom: 16px;
+                right: 16px;
+            }
+            .news-item-small .news-item-arrow svg path {
+                stroke: #000;
+            }
+
+            .news-item-small:hover .news-item-arrow {
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            /* Partners Section Mobile */
+            .partners {
+                width: calc(100% - 40px);
+                padding: 40px 20px;
+                height: auto;
+                border-radius: 20px;
+                margin: 40px 20px;
+            }
+
+            /* Footer Mobile */
+            .custom-footer {
+                width: 100%;
+                padding: 30px 20px;
+                height: auto;
+                text-align: center;
+            }
+
+            .custom-footer .row {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .email-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
+                font-size: 12px;
+                align-items: center;
+            }
+
+            /* Hero Slider Mobile */
+            .hero-slide-content {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                width: auto;
+                text-align: left;
+            }
+            .hero-slide-content h1 {
+                font-size: 56px;
+                margin-bottom: 10px;
+            }
+            .hero-slide-content p {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+            .hero-details-btn {
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
+                padding: 12px;
+            }
+            .hero-slider-controls {
+                right: 20px;
+                bottom: 20px;
+                gap: 10px;
+            }
+            .arrow-button {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-slide-content h1 {
+                font-size: 48px;
+            }
+             .map-puzzle {
+                transform: scale(0.5); /* Even smaller scale for very small screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+  .mobile-menu {
+    width: 100vw;
+    right: -100vw;
+  }
+
+  .mobile-menu.open {
+    right: 0;
+  }
+
+  /* Явно показываем элементы меню внутри .mobile-menu */
+.mobile-menu .nav,
+.mobile-menu .right-menu {
+    display: flex !important;
+}
+
+}
 
     </style>
 </head>
@@ -1035,6 +1428,7 @@
     <div class="logo">
         <img src="{{ url_for('static', filename='uploads/LogoAlatauСity.svg') }}" alt="Logo">
     </div>
+
     <nav class="nav">
         <a href="#">Об Алатау</a>
         <a href="#">Инвесторам</a>
@@ -1046,39 +1440,58 @@
         <div class="lang-select">RU ▾</div>
         <button class="contact-btn">Связаться с нами</button>
     </div>
+
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <nav class="nav">
+            <a href="#">Об Алатау</a>
+            <a href="#">Инвесторам</a>
+            <a href="#">Для СМИ</a>
+            <a href="#">Галерея</a>
+            <a href="#">Контакты</a>
+        </nav>
+        <div class="right-menu">
+            <div class="lang-select">RU ▾</div>
+            <button class="contact-btn">Связаться с нами</button>
+        </div>
+    </div>
 </header>
 
-<section class="hero" style="position: relative; height: 768px; border-radius: 32px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
-    <div class="slides-container" style="display: flex; height: 100%; transition: transform 0.5s ease-in-out;">
-        <div class="hero-slide" style="flex-shrink: 0; width: 100%; height: 100%; position: relative; background-size: cover; background-position: center;">
-            <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35);"></div>
-            <div style="position: absolute; bottom: 40px; left: 60px; color: white; z-index: 2;">
-                <h1 style="font-size: 98px; font-weight: 600; margin: 0;">Alatau City</h1>
-                <p style="font-size: 24px; margin: 12px 0 28px;">Территория опережающего развития</p>
+<section class="hero">
+    <div class="slides-container">
+        <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='uploads/Background.png') }}');">
+            <div class="hero-slide-content">
+                <h1>Alatau City</h1>
+                <p>Территория опережающего развития</p>
                 <a href="#" class="hero-details-btn">Подробнее</a>
             </div>
         </div>
 
-        <div class="hero-slide" style="flex-shrink: 0; width: 100%; height: 100%; position: relative; background-size: cover; background-position: center;">
-            <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35);"></div>
-            <div style="position: absolute; bottom: 40px; left: 60px; color: white; z-index: 2;">
-                <h1 style="font-size: 98px; font-weight: 600; margin: 0;">Alatau City - Slide 2</h1>
-                <p style="font-size: 24px; margin: 12px 0 28px;">Инновации и возможности</p>
+        <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='uploads/Background.png') }}');">
+            <div class="hero-slide-content">
+                <h1>Alatau City - Slide 2</h1>
+                <p>Инновации и возможности</p>
                 <a href="#" class="hero-details-btn">Подробнее</a>
             </div>
         </div>
 
-        <div class="hero-slide" style="flex-shrink: 0; width: 100%; height: 100%; position: relative; background-size: cover; background-position: center;">
-            <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35);"></div>
-            <div style="position: absolute; bottom: 40px; left: 60px; color: white; z-index: 2;">
-                <h1 style="font-size: 98px; font-weight: 600; margin: 0;">Alatau City - Slide 3</h1>
-                <p style="font-size: 24px; margin: 12px 0 28px;">Будущее начинается здесь</p>
+        <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='uploads/Background.png') }}');">
+            <div class="hero-slide-content">
+                <h1>Alatau City - Slide 3</h1>
+                <p>Будущее начинается здесь</p>
                 <a href="#" class="hero-details-btn">Подробнее</a>
             </div>
         </div>
     </div>
 
-    <div style="position: absolute; bottom: 40px; right: 40px; display: flex; align-items: center; gap: 16px; z-index: 2;">
+    <div class="hero-slider-controls">
         <div id="prevSlideBtn" class="arrow-button">
             <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8.5 1.5L2 8L8.5 14.5" stroke="white" stroke-width="2"/>
@@ -1095,7 +1508,7 @@
 <section class="districts">
     <div class="districts-content">
         <div class="districts-left">
-            <p style="font-size: 17px; width: 598px">
+            <p>
                 Алатау – стратегический проект Казахстана, призванный стать международным Центрально-Азиатским хабом.
                 <br><br>
                 Город расположен вдоль стратегической автомагистрали Алматы–Конаев, соединяющей транспортный коридор
@@ -1112,29 +1525,17 @@
                             бизнеса, отдыха и развлечений.</p>
                         <ul>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 2V5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 2V5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3.5 9.08997H20.5" stroke="#10B981" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
-                                          stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M15.9965 13.7H16.0055" stroke="#10B981" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M11.9955 13.7H12.0045" stroke="#10B981" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7.99451 13.7H8.00349" stroke="#10B981" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M15.9965 16.7H16.0055" stroke="#10B981" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M11.9955 16.7H12.0045" stroke="#10B981" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7.99451 16.7H8.00349" stroke="#10B981" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z" stroke="#10B981" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15.9965 13.7H16.0055" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11.9955 13.7H12.0045" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7.99451 13.7H8.00349" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15.9965 16.7H16.0055" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11.9955 16.7H12.0045" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7.99451 16.7H8.00349" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>3 988 га</strong>
@@ -1142,14 +1543,9 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
-                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>223 тыс. жителей</strong>
@@ -1157,18 +1553,11 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
-                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#10B981" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
-                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#10B981"
-                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>181 тыс. человек</strong>
@@ -1176,15 +1565,10 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
-                                          stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M12 8L16 12L12 16" stroke="#10B981" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8 12H16" stroke="#10B981" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>до 306 тыс. человек</strong>
@@ -1204,17 +1588,11 @@
                             бизнеса, отдыха и развлечений.</p>
                         <ul>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 2V5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 2V5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3.5 9.08997H20.5" stroke="#EF6C00" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
-                                          stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z" stroke="#EF6C00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>3 988 га</strong>
@@ -1222,14 +1600,9 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
-                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>223 тыс. жителей</strong>
@@ -1237,18 +1610,11 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
-                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#EF6C00" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
-                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#EF6C00"
-                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>181 тыс. человек</strong>
@@ -1256,15 +1622,10 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
-                                          stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M12 8L16 12L12 16" stroke="#EF6C00" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8 12H16" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#EF6C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>до 306 тыс. человек</strong>
@@ -1284,17 +1645,11 @@
                             бизнеса, отдыха и развлечений.</p>
                         <ul>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 2V5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 2V5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3.5 9.08997H20.5" stroke="#FDD835" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
-                                          stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z" stroke="#FDD835" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>3 988 га</strong>
@@ -1302,14 +1657,9 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
-                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>223 тыс. жителей</strong>
@@ -1317,18 +1667,11 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
-                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#FDD835" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
-                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#FDD835"
-                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>181 тыс. человек</strong>
@@ -1336,15 +1679,10 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
-                                          stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M12 8L16 12L12 16" stroke="#FDD835" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8 12H16" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#FDD835" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>до 306 тыс. человек</strong>
@@ -1364,17 +1702,11 @@
                             бизнеса, отдыха и развлечений.</p>
                         <ul>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 2V5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 2V5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3.5 9.08997H20.5" stroke="#2196F3" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z"
-                                          stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3.5 9.08997H20.5" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 8.5V17C21 20 19 22 16 22H8C5 22 3 20 3 17V8.5C3 5.5 5 3.5 8 3.5H16C19 3.5 21 5.5 21 8.5Z" stroke="#2196F3" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>3 988 га</strong>
@@ -1382,14 +1714,9 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z"
-                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18.81 16.5C18.42 15.65 17.7 14.93 16.78 14.39C15.86 13.85 14.78 13.55 13.67 13.5H10.32C9.21 13.55 8.13 13.85 7.21 14.39C6.29 14.93 5.57 15.65 5.18 16.5C3.76 19.5 3.5 22 12 22C20.5 22 20.24 19.5 18.81 16.5Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>223 тыс. жителей</strong>
@@ -1397,18 +1724,11 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5"
-                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#2196F3" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z"
-                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#2196F3"
-                                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11V17C22 20 19 22 17 22H7C4 22 2 20 2 17V7C2 4 4 2 7 2H17C20 2 22 4 22 7V8.5" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 11H22L19.5 13.5L18 11Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M7 10C8.65685 10 10 8.65685 10 7C10 5.34315 8.65685 4 7 4C5.34315 4 4 5.34315 4 7C4 8.65685 5.34315 10 7 10Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11 18C11 15.79 9.21 14 7 14C4.79 14 3 15.79 3 18" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>181 тыс. человек</strong>
@@ -1416,15 +1736,10 @@
                                 </div>
                             </li>
                             <li>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z"
-                                          stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                    <path d="M12 8L16 12L12 16" stroke="#2196F3" stroke-width="1.5"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8 12H16" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 8L16 12L12 16" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 12H16" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <strong>до 306 тыс. человек</strong>
@@ -1441,19 +1756,14 @@
 
         <div class="districts-map">
             <div class="map-puzzle">
-                <img src="{{ url_for('static', filename='uploads/1.svg') }}" class="map-piece green-piece"
-                     data-district="green" alt="">
-                <img src="{{ url_for('static', filename='uploads/2.svg') }}" class="map-piece orange-piece"
-                     data-district="orange" alt="">
-                <img src="{{ url_for('static', filename='uploads/3.svg') }}" class="map-piece yellow-piece"
-                     data-district="yellow" alt="">
-                <img src="{{ url_for('static', filename='uploads/4.svg') }}" class="map-piece blue-piece"
-                     data-district="blue" alt="">
+                <img src="{{ url_for('static', filename='uploads/1.svg') }}" class="map-piece green-piece" data-district="green" alt="">
+                <img src="{{ url_for('static', filename='uploads/2.svg') }}" class="map-piece orange-piece" data-district="orange" alt="">
+                <img src="{{ url_for('static', filename='uploads/3.svg') }}" class="map-piece yellow-piece" data-district="yellow" alt="">
+                <img src="{{ url_for('static', filename='uploads/4.svg') }}" class="map-piece blue-piece" data-district="blue" alt="">
             </div>
         </div>
     </div>
 </section>
-
 
 <section class="investment">
     <div class="investment-grid">
@@ -1493,19 +1803,17 @@
     </div>
 </section>
 
-
-<section class="news-section"
-         style="padding: 50px 0; background-color: white; border-radius: 40px; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);">
-    <div class="news-content" style="width: 1248px; margin: 0 auto;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <h2 style="font-size: 32px; font-weight: 600;">Новости и события города</h2>
-            <a href="#" style="font-size: 14px; color: #555; text-decoration: none;">Все новости ↗</a>
+<section class="news-section">
+    <div class="news-content">
+        <div class="news-content-header">
+            <h2>Новости и события города</h2>
+            <a href="#">Все новости ↗</a>
         </div>
 
-        <div style="display: flex; gap: 52px;">
+        <div class="news-grid">
             <div class="main-news-item">
                 <img src="{{ url_for('static', filename='uploads/news-main.jpg') }}" alt="Main news">
-                <div style="position: absolute; top: 12px; left: 12px; background: #ff6c36; color: white; padding: 4px 12px; border-radius: 999px; font-size: 14px;">
+                <div class="news-tag" style="background: #ff6c36;">
                     Новости
                 </div>
                 <div class="news-main-text-container">
@@ -1522,7 +1830,7 @@
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 21px; justify-content: space-between;">
+            <div class="small-news-items-container">
                 <div class="news-item-small">
                     <div class="news-image-container">
                         <img src="{{ url_for('static', filename='uploads/news-1.jpg') }}" alt="">
@@ -1587,7 +1895,6 @@
     </div>
 </section>
 
-
 <section class="partners">
     <div class="content-wrapper">
         <h2>Наши партнеры</h2>
@@ -1598,167 +1905,153 @@
     </div>
 </section>
 
-  <footer class="custom-footer mx-auto">
+<footer class="custom-footer">
     <div class="row">
-      <div class="col-md-3">
-        <div class="footer-title">О городе</div>
-        <a href="#" class="footer-link">О городе Алатау</a>
-        <a href="#" class="footer-link">СЭЗ Алатау</a>
-        <a href="#" class="footer-link">Инвесторам</a>
-        <a href="#" class="footer-link">Контакты</a>
-      </div>
-      <div class="col-md-4">
-        <div class="footer-title">Прочее</div>
-        <a href="#" class="footer-link">Онлайн-подача заявки на участие в проектах</a>
-        <a href="#" class="footer-link">Регистрация юридического лица в Алатау</a>
-        <a href="#" class="footer-link">Карта сайта</a>
-      </div>
-      <div class="col-md-5">
-        <div class="footer-title">Есть вопросы или предложения?</div>
-        <div class="text-muted mb-1">Отправьте почту и мы свяжемся с вами в ближайшее время!</div>
-        <form class="email-form">
-          <input type="email" class="form-control footer-input" placeholder="Email" />
-          <button type="submit" class="footer-button">Отправить</button>
-        </form>
-        <div class="fw-semibold mb-2">Следите за нами в соцсетях:</div>
-        <div class="social-icons">
-          <i class="bi bi-youtube"></i>
-          <i class="bi bi-linkedin"></i>
-          <i class="bi bi-instagram"></i>
-          <i class="bi bi-facebook"></i>
-          <i class="bi bi-telegram"></i>
+        <div class="col-md-3">
+            <div class="footer-title">О городе</div>
+            <a href="#" class="footer-link">О городе Алатау</a>
+            <a href="#" class="footer-link">СЭЗ Алатау</a>
+            <a href="#" class="footer-link">Инвесторам</a>
+            <a href="#" class="footer-link">Контакты</a>
         </div>
-      </div>
+        <div class="col-md-4">
+            <div class="footer-title">Прочее</div>
+            <a href="#" class="footer-link">Онлайн-подача заявки на участие в проектах</a>
+            <a href="#" class="footer-link">Регистрация юридического лица в Алатау</a>
+            <a href="#" class="footer-link">Карта сайта</a>
+        </div>
+        <div class="col-md-5">
+            <div class="footer-title">Есть вопросы или предложения?</div>
+            <div class="text-muted mb-1">Отправьте почту и мы свяжемся с вами в ближайшее время!</div>
+            <form class="email-form">
+                <input type="email" class="form-control footer-input" placeholder="Email" />
+                <button type="submit" class="footer-button">Отправить</button>
+            </form>
+            <div class="fw-semibold mb-2">Следите за нами в соцсетях:</div>
+            <div class="social-icons">
+                <i class="bi bi-youtube"></i>
+                <i class="bi bi-linkedin"></i>
+                <i class="bi bi-instagram"></i>
+                <i class="bi bi-facebook"></i>
+                <i class="bi bi-telegram"></i>
+            </div>
+        </div>
     </div>
     <div class="footer-bottom mt-4">
-      <div>© Alatau City, 2025</div>
-      <div>Дизайн и разработка: KeipTech</div>
+        <div>© Alatau City, 2025</div>
+        <div>Дизайн и разработка: KeipTech</div>
     </div>
-  </footer>
+</footer>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-    // Districts accordion and map interaction (keep this as is)
-    const mapPieces = document.querySelectorAll('.map-piece');
-    const accordionItems = document.querySelectorAll('.accordion-item');
-    const districtsContent = document.querySelector('.districts-content');
+        // --- Districts accordion and map interaction ---
+        const mapPieces = document.querySelectorAll('.map-piece');
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        const districtsContent = document.querySelector('.districts-content');
 
-    function setActiveDistrict(districtName) {
-        let anyActive = false;
+        function setActiveDistrict(districtName) {
+            let anyActive = false;
+            mapPieces.forEach(piece => {
+                piece.classList.remove('active');
+            });
+            accordionItems.forEach(item => {
+                item.removeAttribute('open');
+            });
+
+            if (districtName) {
+                anyActive = true;
+                const selectedMapPiece = document.querySelector(`.map-piece[data-district="${districtName}"]`);
+                if (selectedMapPiece) {
+                    selectedMapPiece.classList.add('active');
+                }
+                const selectedAccordionItem = document.querySelector(`.accordion-item[data-district="${districtName}"]`);
+                if (selectedAccordionItem) {
+                    selectedAccordionItem.setAttribute('open', '');
+                }
+            }
+
+            // Adjust districts-content height based on accordion state
+            if (anyActive) {
+                districtsContent.classList.add('expanded');
+            } else {
+                districtsContent.classList.remove('expanded');
+            }
+        }
+
         mapPieces.forEach(piece => {
-            piece.classList.remove('active');
+            piece.addEventListener('click', () => {
+                const district = piece.dataset.district;
+                if (piece.classList.contains('active')) {
+                    setActiveDistrict(null); // Deactivate if already active
+                } else {
+                    setActiveDistrict(district); // Activate if not active
+                }
+            });
         });
+
         accordionItems.forEach(item => {
-            item.removeAttribute('open');
+            const summary = item.querySelector('summary');
+            summary.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default accordion toggle
+                const district = item.dataset.district;
+                const isOpen = item.hasAttribute('open');
+
+                if (isOpen) {
+                    setActiveDistrict(null); // Deactivate if already open
+                } else {
+                    setActiveDistrict(district); // Activate if not open
+                }
+            });
         });
 
-        if (districtName) {
-            anyActive = true;
-            const selectedMapPiece = document.querySelector(`.map-piece[data-district="${districtName}"]`);
-            if (selectedMapPiece) {
-                selectedMapPiece.classList.add('active');
-            }
-            const selectedAccordionItem = document.querySelector(`.accordion-item[data-district="${districtName}"]`);
-            if (selectedAccordionItem) {
-                selectedAccordionItem.setAttribute('open', '');
-            }
+        setActiveDistrict(null); // Initialize with no district active
+
+        // --- Hero section slider functionality ---
+        const slidesContainer = document.querySelector('.slides-container');
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        const prevSlideBtn = document.getElementById('prevSlideBtn');
+        const nextSlideBtn = document.getElementById('nextSlideBtn');
+
+        const slidesData = [
+            { backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', title: 'Alatau City', description: 'Территория опережающего развития' },
+            { backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', title: 'Alatau City - Slide 2', description: 'Инновации и возможности' },
+            { backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', title: 'Alatau City - Slide 3', description: 'Будущее начинается здесь' }
+        ];
+
+        let currentSlideIndex = 0;
+
+        function showSlide(index) {
+            currentSlideIndex = (index + slidesData.length) % slidesData.length;
+            const offset = -currentSlideIndex * 100;
+            slidesContainer.style.transform = `translateX(${offset}%)`;
         }
 
-        if (anyActive) {
-            districtsContent.classList.add('expanded');
-        } else {
-            districtsContent.classList.remove('expanded');
-        }
-    }
+        prevSlideBtn.addEventListener('click', () => showSlide(currentSlideIndex - 1));
+        nextSlideBtn.addEventListener('click', () => showSlide(currentSlideIndex + 1));
 
-    mapPieces.forEach(piece => {
-        piece.addEventListener('click', () => {
-            const district = piece.dataset.district;
-            if (piece.classList.contains('active')) {
-                setActiveDistrict(null);
+        showSlide(currentSlideIndex); // Initialize slider
+
+        // --- Burger menu functionality ---
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+            menuToggle.classList.toggle('open');
+            if (mobileMenu.classList.contains('open')) {
+                mobileMenuOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Prevent main content scrolling
             } else {
-                setActiveDistrict(district);
+                mobileMenuOverlay.style.display = 'none';
+                document.body.style.overflow = ''; // Restore main content scrolling
             }
-        });
-    });
-
-    accordionItems.forEach(item => {
-        const summary = item.querySelector('summary');
-        summary.addEventListener('click', (event) => {
-            event.preventDefault();
-            const district = item.dataset.district;
-            const isOpen = item.hasAttribute('open');
-
-            if (isOpen) {
-                setActiveDistrict(null);
-            } else {
-                setActiveDistrict(district);
-            }
-        });
-    });
-
-    setActiveDistrict(null);
-
-    // Hero section slider functionality
-    const slidesContainer = document.querySelector('.slides-container');
-    const heroSlides = document.querySelectorAll('.hero-slide');
-    const prevSlideBtn = document.getElementById('prevSlideBtn');
-    const nextSlideBtn = document.getElementById('nextSlideBtn');
-
-    const slidesData = [
-        {
-            backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}',
-            title: 'Alatau City',
-            description: 'Территория опережающего развития',
-            buttonLink: '#'
-        },
-        {
-            backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', // Make sure you have image2.jpg and image3.jpg in your uploads folder
-            title: 'Alatau City - Slide 2',
-            description: 'Инновации и возможности',
-            buttonLink: '#'
-        },
-        {
-            backgroundImage: '{{ url_for('static', filename='uploads/Background.png') }}', // Example path, adjust as needed
-            title: 'Alatau City - Slide 3',
-            description: 'Будущее начинается здесь',
-            buttonLink: '#'
         }
-    ];
 
-    let currentSlideIndex = 0;
-
-    // Set background images for each slide initially
-    heroSlides.forEach((slide, index) => {
-        slide.style.backgroundImage = `url('${slidesData[index].backgroundImage}')`;
-        // If you want to dynamically set text for each slide, you'd do it here too:
-        // slide.querySelector('h1').textContent = slidesData[index].title;
-        // slide.querySelector('p').textContent = slidesData[index].description;
-        // slide.querySelector('a').href = slidesData[index].buttonLink;
+        menuToggle.addEventListener('click', toggleMobileMenu);
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
     });
-
-    function showSlide(index) {
-        currentSlideIndex = (index + slidesData.length) % slidesData.length;
-        const offset = -currentSlideIndex * 100; // Calculate percentage to shift
-        slidesContainer.style.transform = `translateX(${offset}%)`;
-    }
-
-    function nextSlide() {
-        showSlide(currentSlideIndex + 1);
-    }
-
-    function prevSlide() {
-        showSlide(currentSlideIndex - 1);
-    }
-
-    // Attach slider event listeners
-    if (prevSlideBtn && nextSlideBtn) {
-        prevSlideBtn.addEventListener('click', prevSlide);
-        nextSlideBtn.addEventListener('click', nextSlide);
-    }
-
-    // Initialize slider
-    showSlide(currentSlideIndex);
-});
 </script>
 
 </body>
